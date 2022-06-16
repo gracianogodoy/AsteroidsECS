@@ -17,14 +17,10 @@ namespace Asteroids.Core
 
             var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
 
-            var rotation = GetComponent<Rotation>(shipEntity);
             var velocity = GetComponent<Velocity>(shipEntity);
+            var facingDirection = GetComponent<FacingDirection>(shipEntity);
 
-            var rotationValue = rotation.Value + math.radians(90);
-
-            var direction = new float2(math.cos(rotationValue), math.sin(rotationValue));
-
-            var finalAcceleration = direction * shipSettings.Acceleration * deltaTime;
+            var finalAcceleration = facingDirection.Value * shipSettings.Acceleration * deltaTime;
 
             velocity.Value += finalAcceleration;
 

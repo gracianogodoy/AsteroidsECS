@@ -13,16 +13,26 @@ namespace Asteroids.Core
                 EntityManager.CreateEntity(typeof(MoveFowardInput));
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                var e = EntityManager.CreateEntity(typeof(RotateInput));
-                EntityManager.SetComponentData(e, new RotateInput() { Value = RotateInput.Direction.Right });
+                var e = EntityManager.CreateEntity(typeof(StartTurningInput));
+                EntityManager.SetComponentData(e, new StartTurningInput() { Direction = StartTurningInput.TurningDirection.Right });
+            }
+            else
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                var e = EntityManager.CreateEntity(typeof(StartTurningInput));
+                EntityManager.SetComponentData(e, new StartTurningInput() { Direction = StartTurningInput.TurningDirection.Left });
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
             {
-                var e = EntityManager.CreateEntity(typeof(RotateInput));
-                EntityManager.SetComponentData(e, new RotateInput() { Value = RotateInput.Direction.Left });
+                EntityManager.CreateEntity(typeof(StopTurningInput));
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                EntityManager.CreateEntity(typeof(ShootInput));
             }
         }
     }

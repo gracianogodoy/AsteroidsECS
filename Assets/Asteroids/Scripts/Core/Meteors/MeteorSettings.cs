@@ -15,5 +15,8 @@ namespace Asteroids.Core
         public float SmallSizeFactor = 0.2f;
         public float MediumSizeFactor = 0.5f;
         public float BigSizeFactor = 1f;
+
+        public int MinRotateSpeed = 60;
+        public int MaxRotateSpeed = 90;
     }
 }

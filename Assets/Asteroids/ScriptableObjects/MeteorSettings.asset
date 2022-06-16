@@ -19,3 +19,5 @@ MonoBehaviour:
   SmallSizeFactor: 0.2
   MediumSizeFactor: 0.5
   BigSizeFactor: 2
+  MinRotateSpeed: -90
+  MaxRotateSpeed: 90

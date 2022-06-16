@@ -5,26 +5,18 @@ namespace Asteroids.Core
 {
     public class RotateSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
             var bufferFromEntity = GetBufferFromEntity<Points>();
-
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var deltaTime = Time.DeltaTime;
 
             Entities.ForEach((Entity entity,
                 ref Rotation rotation,
-                in Rotate rotate) =>
+                in RotateSpeed rotateSpeed) =>
             {
                 var pointsBuffer = bufferFromEntity[entity];
 
-                var angle = math.radians(rotate.Degrees);
+                var angle = math.radians(rotateSpeed.Value) * deltaTime;
                 rotation.Value += angle;
 
                 for (int i = 0; i < pointsBuffer.Length; i++)
@@ -40,7 +32,6 @@ namespace Asteroids.Core
 
                     pointsBuffer.ElementAt(i).Value = newValue;
                 }
-                commandBuffer.RemoveComponent<Rotate>(entity);
             }).Schedule();
 
             this.CompleteDependency();

@@ -33,12 +33,19 @@ namespace Asteroids.Core
 
         private void SpawnSingle(float2 spawnPosition, float2 direction, float speed, Meteor.MeteorSize size)
         {
-            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            var entityManager = EntityManager;
 
-            var shipEntity = entityManager.CreateEntity(typeof(Meteor), typeof(Velocity));
+            var shipEntity = entityManager.CreateEntity(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed));
 
-            entityManager.SetComponentData(shipEntity, new Meteor() { Size = size });
-            entityManager.SetComponentData(shipEntity, new Velocity() { Value = direction * speed });
+            entityManager.SetComponentData(shipEntity,
+                new Meteor() { Size = size });
+            entityManager.SetComponentData(shipEntity,
+                new RotateSpeed()
+                {
+                    Value = UnityEngine.Random.Range(settings.MinRotateSpeed, settings.MaxRotateSpeed)
+                });
+            entityManager.SetComponentData(shipEntity,
+                new Velocity() { Value = direction * speed });
 
             float sizeFactor = GetSizeFactor(size);
 

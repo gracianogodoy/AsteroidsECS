@@ -7,21 +7,30 @@ namespace Asteroids.Core
         protected override void OnUpdate()
         {
             var shipSettings = Settings.Instance.Ship;
-            var deltaTime = Time.DeltaTime;
 
-            var rotateInputQuery = GetEntityQuery(typeof(RotateInput));
-
-            if (rotateInputQuery.IsEmpty)
-                return;
-
-            var rotateInputEntity = rotateInputQuery.GetSingletonEntity();
-            var rotateInput = GetComponent<RotateInput>(rotateInputEntity);
+            var startTurningInputQuery = GetEntityQuery(typeof(StartTurningInput));
+            var stopTurningInputQuery = GetEntityQuery(typeof(StopTurningInput));
 
             var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
-            var rotateAngle = shipSettings.RotationSpeed * (int)rotateInput.Value * deltaTime;
-            EntityManager.AddComponentData(shipEntity, new Rotate() { Degrees = rotateAngle });
 
-            EntityManager.DestroyEntity(rotateInputEntity);
+            if (!stopTurningInputQuery.IsEmpty)
+            {
+                EntityManager.RemoveComponent<RotateSpeed>(shipEntity);
+
+                var stopTurningInputEntity = stopTurningInputQuery.GetSingletonEntity();
+                EntityManager.DestroyEntity(stopTurningInputEntity);
+            }
+
+            if (!startTurningInputQuery.IsEmpty && !HasComponent<RotateSpeed>(shipEntity))
+            {
+                var startTurningInputEntity = startTurningInputQuery.GetSingletonEntity();
+                var turningInput = GetComponent<StartTurningInput>(startTurningInputEntity);
+
+                var rotateAngle = shipSettings.RotationSpeed * -(int)turningInput.Direction;
+                EntityManager.AddComponentData(shipEntity, new RotateSpeed() { Value = rotateAngle });
+
+                EntityManager.DestroyEntity(startTurningInputEntity);
+            }
         }
     }
 }

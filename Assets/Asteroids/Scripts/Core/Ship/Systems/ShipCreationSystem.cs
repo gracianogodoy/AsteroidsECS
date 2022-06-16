@@ -17,17 +17,17 @@ namespace Asteroids.Core
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
             var shipEntity = entityManager.CreateEntity(typeof(Ship), typeof(Velocity));
-            var size = shipSettings.Size;
+            var sizeFactor = shipSettings.SizeFactor;
 
             EntityCreationHelper.AddViewComponents(shipEntity,
                 entityManager,
                 shipSettings.StartingPosition,
                 shipSettings.ColorID,
-                new float2(0, 0.5f) * size,
-                new float2(0.5f, -0.5f) * size,
-                new float2(0.3f, -0.35f) * size,
-                new float2(-0.3f, -0.35f) * size,
-                new float2(-0.5f, -0.5f) * size
+                new float2(0, 0.5f) * sizeFactor,
+                new float2(0.5f, -0.5f) * sizeFactor,
+                new float2(0.3f, -0.35f) * sizeFactor,
+                new float2(-0.3f, -0.35f) * sizeFactor,
+                new float2(-0.5f, -0.5f) * sizeFactor
                 );
         }
 

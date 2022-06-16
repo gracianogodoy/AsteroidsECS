@@ -13,7 +13,7 @@ namespace Asteroids.Core
         public byte ColorID = 0;
 
         [SerializeField]
-        public float Size = 0.5f;
+        public float SizeFactor = 0.5f;
 
         [SerializeField]
         public float RotationSpeed = 30;

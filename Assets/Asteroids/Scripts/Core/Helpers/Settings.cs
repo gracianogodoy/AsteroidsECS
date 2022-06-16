@@ -5,6 +5,7 @@ namespace Asteroids.Core
     public class Settings : MonoBehaviour
     {
         public ShipSettings Ship;
+        public MeteorSettings Meteor;
 
         private static Settings instance;
 

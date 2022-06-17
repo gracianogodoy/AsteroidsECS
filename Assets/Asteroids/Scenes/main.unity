@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ship: {fileID: 11400000, guid: 6e6f99832f0abdd4d93baa73175e8150, type: 2}
   Meteor: {fileID: 11400000, guid: 9d36c61397a2585489e25f37abe00b09, type: 2}
+  UFO: {fileID: 11400000, guid: 47515f770145a594caaffb91f94d2455, type: 2}
 --- !u!4 &85769669
 Transform:
   m_ObjectHideFlags: 0
@@ -201,6 +202,8 @@ MonoBehaviour:
   - {r: 0.5411765, g: 1, b: 0.97252935, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 0, b: 0.94516706, a: 1}
+  - {r: 1, g: 0.53587186, b: 0, a: 1}
+  - {r: 1, g: 0.008334476, b: 0, a: 1}
 --- !u!4 &673732036
 Transform:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 
 namespace Asteroids.Core
 {
+    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
     public class DestroyOutsideScreenSystem : SystemBase
     {
         private EntityCommandBufferSystem commandBufferSystem;

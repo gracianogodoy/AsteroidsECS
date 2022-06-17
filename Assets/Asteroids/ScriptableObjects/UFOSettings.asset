@@ -9,17 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49be9505ed4f06c4082b57e51b7d96bb, type: 3}
-  m_Name: ShipSettings
+  m_Script: {fileID: 11500000, guid: 68f94114e79a5334e9202a977b2fe8d5, type: 3}
+  m_Name: UFOSettings
   m_EditorClassIdentifier: 
-  StartingPosition:
-    x: 0
-    y: 0
-  ColorID: 0
-  SizeFactor: 0.5
-  RotationSpeed: 270
-  Acceleration: 10
-  MaxSpeed: 3
-  ShootCooldown: 0.2
-  BulletSpeed: 10
-  BulletColorID: 2
+  ColorID: 3
+  MinSpeed: 1
+  MaxSpeed: 2
+  SmallSizeFactor: 0.8
+  BigSizeFactor: 1.1
+  SpawnCooldown: 2

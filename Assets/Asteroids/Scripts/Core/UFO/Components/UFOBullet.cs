@@ -2,7 +2,7 @@
 
 namespace Asteroids.Core
 {
-    public struct Ship : IComponentData
+    public struct UFOBullet : IComponentData
     {
     }
 }

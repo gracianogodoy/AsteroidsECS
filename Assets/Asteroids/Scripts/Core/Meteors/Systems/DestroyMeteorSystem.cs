@@ -2,7 +2,7 @@
 
 namespace Asteroids.Core
 {
-    [UpdateAfter(typeof(CollisionSystem))]
+    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
     public class DestroyMeteorSystem : SystemBase
     {
         private EntityCommandBufferSystem commandBufferSystem;

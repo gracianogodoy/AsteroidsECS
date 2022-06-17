@@ -37,18 +37,18 @@ namespace Asteroids.Core
 
                 var direction = new float2(randomDirection.x, randomDirection.y);
 
-                var shipEntity = commandBuffer.CreateEntity(archetype);
+                var meteorEntity = commandBuffer.CreateEntity(archetype);
 
                 var size = doCreateMeteor.Size;
 
-                commandBuffer.SetComponent(shipEntity,
+                commandBuffer.SetComponent(meteorEntity,
                     new Meteor() { Size = size });
-                commandBuffer.SetComponent(shipEntity,
+                commandBuffer.SetComponent(meteorEntity,
                     new RotateSpeed()
                     {
                         Value = UnityEngine.Random.Range(minRotateSpeed, maxRotateSpeed)
                     });
-                commandBuffer.SetComponent(shipEntity,
+                commandBuffer.SetComponent(meteorEntity,
                     new Velocity() { Value = direction * speed });
 
                 float sizeFactor = bigSizeFactor;
@@ -71,7 +71,7 @@ namespace Asteroids.Core
                 points[6] = new float2(-0.5f, -0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier);
                 points[7] = new float2(-0.5f, 0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier);
 
-                EntityCreationHelper.AddViewComponents(shipEntity,
+                EntityCreationHelper.AddViewComponents(meteorEntity,
                     commandBuffer,
                     doCreateMeteor.Position,
                     colorID,

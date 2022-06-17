@@ -6,6 +6,7 @@ namespace Asteroids.Core
     {
         public ShipSettings Ship;
         public MeteorSettings Meteor;
+        public UFOSettings UFO;
 
         private static Settings instance;
 

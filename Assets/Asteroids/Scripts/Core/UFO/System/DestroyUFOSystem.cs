@@ -3,7 +3,7 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class DestroyShipSystem : SystemBase
+    public class DestroyUFOSystem : SystemBase
     {
         private EntityCommandBufferSystem commandBufferSystem;
 
@@ -17,13 +17,12 @@ namespace Asteroids.Core
             var deltaTime = Time.DeltaTime;
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
             var entityManager = EntityManager;
-            var settings = Settings.Instance.Meteor;
 
-            Entities.WithAll<Ship>().ForEach((Entity e, in IsColliding isColliding) =>
+            Entities.ForEach((Entity e, in IsColliding isColliding, in UFO ufo) =>
             {
                 var otherEntity = isColliding.OtherEntity;
 
-                if (HasComponent<Meteor>(otherEntity) || HasComponent<UFOBullet>(otherEntity))
+                if (HasComponent<ShipBullet>(otherEntity))
                 {
                     commandBuffer.DestroyEntity(e);
                     commandBuffer.DestroyEntity(otherEntity);

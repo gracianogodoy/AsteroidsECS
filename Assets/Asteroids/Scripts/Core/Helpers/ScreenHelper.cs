@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Asteroids.Core
+﻿namespace Asteroids.Core
 {
     public static class ScreenHelper
     {

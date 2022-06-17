@@ -21,17 +21,29 @@ namespace Asteroids.Core
                 var x = UnityEngine.Random.Range(ScreenHelper.MinBoundX, ScreenHelper.MaxBoundX);
                 var y = UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY);
 
-                var minDistanceFromCenter = 2;
+                var randomScreenSide = UnityEngine.Random.Range(0, 4);
+                var spawnPosition = new float2(x, y);
 
-                if (y < minDistanceFromCenter && y > -minDistanceFromCenter)
+                switch (randomScreenSide)
                 {
-                    if (x < minDistanceFromCenter && x > 0)
-                        x += minDistanceFromCenter;
-                    if (x > -minDistanceFromCenter && x < 0)
-                        x -= minDistanceFromCenter;
+                    case 0:
+                        spawnPosition.y = ScreenHelper.MaxBoundY;
+                        break;
+
+                    case 1:
+                        spawnPosition.x = ScreenHelper.MaxBoundX;
+                        break;
+
+                    case 2:
+                        spawnPosition.y = ScreenHelper.MinBoundY;
+                        break;
+
+                    case 3:
+                    default:
+                        spawnPosition.x = ScreenHelper.MinBoundX;
+                        break;
                 }
 
-                var spawnPosition = new float2(x, y);
                 var doCreateEntity = EntityManager.CreateEntity();
                 EntityManager.AddComponentData(doCreateEntity, new DoCreateMeteor() { Position = spawnPosition, Size = Meteor.MeteorSize.Big });
             }

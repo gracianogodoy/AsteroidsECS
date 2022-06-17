@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MeteorSettings
   m_EditorClassIdentifier: 
   ColorID: 1
-  SpawnAmount: 2
+  SpawnAmount: 10
   MinSpeed: 1
   MaxSpeed: 2
   SmallSizeFactor: 0.5

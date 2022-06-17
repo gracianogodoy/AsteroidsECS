@@ -34,6 +34,11 @@ namespace Asteroids.Core
             {
                 EntityManager.CreateEntity(typeof(ShootInput));
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                EntityManager.CreateEntity(typeof(HypertravelInput));
+            }
         }
     }
 }

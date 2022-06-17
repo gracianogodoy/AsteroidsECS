@@ -11,11 +11,20 @@ namespace Asteroids.Core
             var shipSettings = Settings.Instance.Ship;
 
             var moveFowardQuery = GetEntityQuery(typeof(MoveFowardInput));
+            var shipQuery = GetEntityQuery(typeof(Ship));
+
+            if (shipQuery.IsEmpty)
+            {
+                if (!moveFowardQuery.IsEmpty)
+                    EntityManager.DestroyEntity(moveFowardQuery.GetSingletonEntity());
+
+                return;
+            }
 
             if (moveFowardQuery.IsEmpty)
                 return;
 
-            var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
+            var shipEntity = shipQuery.GetSingletonEntity();
 
             var velocity = GetComponent<Velocity>(shipEntity);
             var facingDirection = GetComponent<FacingDirection>(shipEntity);

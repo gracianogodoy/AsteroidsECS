@@ -2,6 +2,7 @@
 
 namespace Asteroids.Core
 {
+    [UpdateBefore(typeof(CollisionSystem))]
     public class ClearIsCollidingCompleteSystem : SystemBase
     {
         private EntityCommandBufferSystem commandBufferSystem;

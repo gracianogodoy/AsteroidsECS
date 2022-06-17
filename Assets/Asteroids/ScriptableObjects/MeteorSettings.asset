@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: MeteorSettings
   m_EditorClassIdentifier: 
   ColorID: 1
-  SpawnAmount: 10
+  SpawnAmount: 2
   MinSpeed: 1
   MaxSpeed: 2
-  SmallSizeFactor: 0.2
-  MediumSizeFactor: 0.5
+  SmallSizeFactor: 0.5
+  MediumSizeFactor: 1
   BigSizeFactor: 2
   MinRotateSpeed: -90
   MaxRotateSpeed: 90

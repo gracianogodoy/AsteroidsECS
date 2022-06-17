@@ -11,7 +11,25 @@ namespace Asteroids.Core
             var startTurningInputQuery = GetEntityQuery(typeof(StartTurningInput));
             var stopTurningInputQuery = GetEntityQuery(typeof(StopTurningInput));
 
-            var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
+            var shipQuery = GetEntityQuery(typeof(Ship));
+
+            if (shipQuery.IsEmpty)
+            {
+                if (!stopTurningInputQuery.IsEmpty)
+                {
+                    var stopTurningInputEntity = stopTurningInputQuery.GetSingletonEntity();
+                    EntityManager.DestroyEntity(stopTurningInputEntity);
+                }
+
+                if (!startTurningInputQuery.IsEmpty)
+                {
+                    var startTurningInputEntity = startTurningInputQuery.GetSingletonEntity();
+                    EntityManager.DestroyEntity(startTurningInputEntity);
+                }
+                return;
+            }
+
+            var shipEntity = shipQuery.GetSingletonEntity();
 
             if (!stopTurningInputQuery.IsEmpty)
             {

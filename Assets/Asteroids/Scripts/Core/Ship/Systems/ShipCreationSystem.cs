@@ -16,7 +16,11 @@ namespace Asteroids.Core
 
             var entityManager = EntityManager;
 
-            var shipEntity = entityManager.CreateEntity(typeof(Ship), typeof(Velocity), typeof(Warpable), typeof(FacingDirection));
+            var shipEntity = entityManager.CreateEntity(typeof(Ship),
+                typeof(Velocity),
+                typeof(Warpable),
+                typeof(FacingDirection),
+                typeof(Collidable));
             var sizeFactor = shipSettings.SizeFactor;
 
             EntityCreationHelper.AddViewComponents(shipEntity,

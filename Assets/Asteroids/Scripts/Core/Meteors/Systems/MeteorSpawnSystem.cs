@@ -18,70 +18,22 @@ namespace Asteroids.Core
         {
             for (int i = 0; i < settings.SpawnAmount; i++)
             {
-                var spawnPosition = new float2(UnityEngine.Random.Range(ScreenHelper.MinBoundX, ScreenHelper.MaxBoundX),
-                    UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY));
+                var x = UnityEngine.Random.Range(ScreenHelper.MinBoundX, ScreenHelper.MaxBoundX);
+                var y = UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY);
 
-                var randomDirection = UnityEngine.Random.insideUnitCircle.normalized;
+                var minDistanceFromCenter = 2;
 
-                var direction = new float2(randomDirection.x, randomDirection.y);
-
-                var speed = UnityEngine.Random.Range(settings.MinSpeed, settings.MaxSpeed);
-
-                SpawnSingle(spawnPosition, direction, speed, Meteor.MeteorSize.Big);
-            }
-        }
-
-        private void SpawnSingle(float2 spawnPosition, float2 direction, float speed, Meteor.MeteorSize size)
-        {
-            var entityManager = EntityManager;
-
-            var shipEntity = entityManager.CreateEntity(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed), typeof(Collidable));
-
-            entityManager.SetComponentData(shipEntity,
-                new Meteor() { Size = size });
-            entityManager.SetComponentData(shipEntity,
-                new RotateSpeed()
+                if (y < minDistanceFromCenter && y > -minDistanceFromCenter)
                 {
-                    Value = UnityEngine.Random.Range(settings.MinRotateSpeed, settings.MaxRotateSpeed)
-                });
-            entityManager.SetComponentData(shipEntity,
-                new Velocity() { Value = direction * speed });
+                    if (x < minDistanceFromCenter && x > 0)
+                        x += minDistanceFromCenter;
+                    if (x > -minDistanceFromCenter && x < 0)
+                        x -= minDistanceFromCenter;
+                }
 
-            float sizeFactor = GetSizeFactor(size);
-
-            float minAdjustmentMulplier = 0.7f;
-            float maxAdjustmentMulplier = 1.2f;
-
-            EntityCreationHelper.AddViewComponents(shipEntity,
-                entityManager,
-                spawnPosition,
-                settings.ColorID,
-                new float2(-0.19f, 0.5f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(0.19f, 0.5f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(0.5f, 0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(0.5f, -0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(0.19f, -0.5f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(-0.19f, -0.5f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(-0.5f, -0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier),
-                new float2(-0.5f, 0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier)
-                );
-        }
-
-        private float GetSizeFactor(Meteor.MeteorSize size)
-        {
-            switch (size)
-            {
-                case Meteor.MeteorSize.Small:
-                    return settings.SmallSizeFactor;
-
-                case Meteor.MeteorSize.Medium:
-                    return settings.MediumSizeFactor;
-
-                case Meteor.MeteorSize.Big:
-                    return settings.BigSizeFactor;
-
-                default:
-                    return 0;
+                var spawnPosition = new float2(x, y);
+                var doCreateEntity = EntityManager.CreateEntity();
+                EntityManager.AddComponentData(doCreateEntity, new DoCreateMeteor() { Position = spawnPosition, Size = Meteor.MeteorSize.Big });
             }
         }
 

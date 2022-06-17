@@ -7,7 +7,7 @@ namespace Asteroids.Core
     {
         private ShipSettings settings;
 
-        protected override void OnStartRunning()
+        protected override void OnCreate()
         {
             var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
             EntityManager.AddComponent<CanShoot>(shipEntity);
@@ -17,14 +17,23 @@ namespace Asteroids.Core
         {
             settings = Settings.Instance.Ship;
 
-            var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
+            var shipQuery = GetEntityQuery(typeof(Ship));
+            var shootInputQuery = GetEntityQuery(typeof(ShootInput));
+
+            if (shipQuery.IsEmpty)
+            {
+                if (!shootInputQuery.IsEmpty)
+                    EntityManager.DestroyEntity(shootInputQuery.GetSingletonEntity());
+
+                return;
+            }
+
+            var shipEntity = shipQuery.GetSingletonEntity();
 
             if (HasComponent<IsCooldownComplete>(shipEntity))
             {
                 EntityManager.AddComponent<CanShoot>(shipEntity);
             }
-
-            var shootInputQuery = GetEntityQuery(typeof(ShootInput));
 
             if (shootInputQuery.IsEmpty)
                 return;

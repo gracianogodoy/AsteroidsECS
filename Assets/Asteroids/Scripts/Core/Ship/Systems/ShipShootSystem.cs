@@ -49,7 +49,7 @@ namespace Asteroids.Core
         {
             var entityManager = EntityManager;
 
-            var bulletEntity = entityManager.CreateEntity(typeof(Velocity), typeof(MustDestroyOutsideScreen));
+            var bulletEntity = entityManager.CreateEntity(typeof(Velocity), typeof(MustDestroyOutsideScreen), typeof(ShipBullet), typeof(Collidable));
 
             entityManager.SetComponentData(bulletEntity, new Velocity() { Value = direction * settings.BulletSpeed });
 

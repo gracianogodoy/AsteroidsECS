@@ -35,7 +35,7 @@ namespace Asteroids.Core
         {
             var entityManager = EntityManager;
 
-            var shipEntity = entityManager.CreateEntity(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed));
+            var shipEntity = entityManager.CreateEntity(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed), typeof(Collidable));
 
             entityManager.SetComponentData(shipEntity,
                 new Meteor() { Size = size });
@@ -49,7 +49,7 @@ namespace Asteroids.Core
 
             float sizeFactor = GetSizeFactor(size);
 
-            float minAdjustmentMulplier = 0.6f;
+            float minAdjustmentMulplier = 0.7f;
             float maxAdjustmentMulplier = 1.2f;
 
             EntityCreationHelper.AddViewComponents(shipEntity,

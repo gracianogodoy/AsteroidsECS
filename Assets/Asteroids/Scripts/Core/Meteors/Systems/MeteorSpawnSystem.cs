@@ -3,6 +3,8 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateBefore(typeof(MeteorCreationSystem))]
     public class MeteorSpawnSystem : SystemBase
     {
         private MeteorSettings settings;
@@ -10,8 +12,31 @@ namespace Asteroids.Core
         protected override void OnCreate()
         {
             settings = Settings.Instance.Meteor;
+            EntityManager.CreateEntity(typeof(MeteorSpawnCooldown));
+        }
 
-            SpawnMeteors();
+        protected override void OnUpdate()
+        {
+            var meteorQuery = GetEntityQuery(typeof(Meteor));
+            var doCreateMeteorQuery = GetEntityQuery(typeof(DoCreateMeteor));
+            var cooldownEntity = GetEntityQuery(typeof(MeteorSpawnCooldown)).GetSingletonEntity();
+
+            if (HasComponent<IsCooldownComplete>(cooldownEntity))
+            {
+                SpawnMeteors();
+            }
+
+            if (doCreateMeteorQuery.IsEmpty && meteorQuery.IsEmpty && !HasComponent<Cooldown>(cooldownEntity))
+            {
+                EntityManager.AddComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
+            }
+
+            var doResetQuery = GetEntityQuery(typeof(DoReset));
+            if (!doResetQuery.IsEmpty)
+            {
+                if (HasComponent<Cooldown>(cooldownEntity))
+                    EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
+            }
         }
 
         private void SpawnMeteors()
@@ -47,10 +72,6 @@ namespace Asteroids.Core
                 var doCreateEntity = EntityManager.CreateEntity();
                 EntityManager.AddComponentData(doCreateEntity, new DoCreateMeteor() { Position = spawnPosition, Size = Meteor.MeteorSize.Big });
             }
-        }
-
-        protected override void OnUpdate()
-        {
         }
     }
 }

@@ -10,8 +10,7 @@ namespace Asteroids.Core
         protected override void OnCreate()
         {
             settings = Settings.Instance.UFO;
-            var cooldownEntity = EntityManager.CreateEntity(typeof(UFOSpawnCoodown), typeof(Cooldown));
-            EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
+            CreateCooldownEntity();
         }
 
         protected override void OnUpdate()
@@ -23,6 +22,19 @@ namespace Asteroids.Core
                 CreateUFO();
                 EntityManager.AddComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
             }
+
+            var doResetQuery = GetEntityQuery(typeof(DoReset));
+            if (!doResetQuery.IsEmpty)
+            {
+                if (HasComponent<Cooldown>(cooldownEntity))
+                    EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
+            }
+        }
+
+        private void CreateCooldownEntity()
+        {
+            var cooldownEntity = EntityManager.CreateEntity(typeof(UFOSpawnCoodown), typeof(Cooldown));
+            EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
         }
 
         private void CreateUFO()
@@ -55,7 +67,7 @@ namespace Asteroids.Core
 
             EntityManager.SetComponentData(ufoEntity, new UFO() { Type = ufoType });
 
-            EntityCreationHelper.AddViewComponents(ufoEntity,
+            EntityCreationHelper.AddBaseComponents(ufoEntity,
                 EntityManager,
                 position,
                 colorID,

@@ -7,6 +7,8 @@ namespace Asteroids.Core
     {
         public byte ColorID = 1;
 
+        public float SpawnCooldown = 3;
+
         public int SpawnAmount = 10;
 
         public float MinSpeed = 1;

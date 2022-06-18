@@ -6,12 +6,14 @@ namespace Asteroids.Core
 {
     public static class EntityCreationHelper
     {
-        public static void AddViewComponents(Entity entity, EntityManager entityManager, float2 startingPosition, byte colorId, params float2[] points)
+        public static void AddBaseComponents(Entity entity, EntityManager entityManager, float2 startingPosition, byte colorId, params float2[] points)
         {
             entityManager.AddComponentData(entity, new Position()
             {
                 Value = startingPosition
             });
+
+            entityManager.AddComponentData(entity, new Resetable());
 
             entityManager.AddComponentData(entity, new Rotation());
 
@@ -35,6 +37,7 @@ namespace Asteroids.Core
                 Value = startingPosition
             });
 
+            commandBuffer.AddComponent(entity, new Resetable());
             commandBuffer.AddComponent(entity, new Rotation());
 
             commandBuffer.AddComponent(entity, new ColorID()

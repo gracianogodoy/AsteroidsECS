@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MeteorSettings
   m_EditorClassIdentifier: 
   ColorID: 1
+  SpawnCooldown: 1.5
   SpawnAmount: 10
   MinSpeed: 1
   MaxSpeed: 2

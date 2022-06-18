@@ -23,10 +23,13 @@ namespace Asteroids.Core
             {
                 var otherEntity = isColliding.OtherEntity;
 
-                if (HasComponent<Meteor>(otherEntity) || HasComponent<UFOBullet>(otherEntity))
+                if (HasComponent<Meteor>(otherEntity) || HasComponent<UFOBullet>(otherEntity) || HasComponent<UFO>(otherEntity))
                 {
                     commandBuffer.DestroyEntity(e);
                     commandBuffer.DestroyEntity(otherEntity);
+
+                    var doResetEntity = commandBuffer.CreateEntity();
+                    commandBuffer.AddComponent(doResetEntity, new DoReset());
                 }
             }).WithoutBurst().Run();
         }

@@ -58,13 +58,11 @@ namespace Asteroids.Core
                                     intersectionAmount++;
                             }
 
-                            if (intersectionAmount > 0)
-                                if (intersectionAmount % 2 != 0)
-                                {
-                                    commandBuffer.AddComponent(entity, new IsColliding() { OtherEntity = otherEntity });
-                                    commandBuffer.AddComponent(otherEntity, new IsColliding() { OtherEntity = entity });
-                                    break;
-                                }
+                            if (intersectionAmount % 2 != 0)
+                            {
+                                commandBuffer.AddComponent(entity, new IsColliding() { OtherEntity = otherEntity });
+                                commandBuffer.AddComponent(otherEntity, new IsColliding() { OtherEntity = entity });
+                            }
                         }
                     }
                 }

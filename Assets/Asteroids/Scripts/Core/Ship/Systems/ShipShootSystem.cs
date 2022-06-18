@@ -7,12 +7,6 @@ namespace Asteroids.Core
     {
         private ShipSettings settings;
 
-        protected override void OnCreate()
-        {
-            var shipEntity = GetEntityQuery(typeof(Ship)).GetSingletonEntity();
-            EntityManager.AddComponent<CanShoot>(shipEntity);
-        }
-
         protected override void OnUpdate()
         {
             settings = Settings.Instance.Ship;
@@ -20,7 +14,9 @@ namespace Asteroids.Core
             var shipQuery = GetEntityQuery(typeof(Ship));
             var shootInputQuery = GetEntityQuery(typeof(ShootInput));
 
-            if (shipQuery.IsEmpty)
+            var doResetQuery = GetEntityQuery(typeof(DoReset));
+
+            if (shipQuery.IsEmpty || !doResetQuery.IsEmpty)
             {
                 if (!shootInputQuery.IsEmpty)
                     EntityManager.DestroyEntity(shootInputQuery.GetSingletonEntity());
@@ -62,7 +58,7 @@ namespace Asteroids.Core
 
             entityManager.SetComponentData(bulletEntity, new Velocity() { Value = direction * settings.BulletSpeed });
 
-            EntityCreationHelper.AddViewComponents(bulletEntity,
+            EntityCreationHelper.AddBaseComponents(bulletEntity,
                 entityManager,
                 position,
                 settings.BulletColorID,

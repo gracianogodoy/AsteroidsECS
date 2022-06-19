@@ -14,10 +14,7 @@ namespace Asteroids.Core
 
         protected override void OnUpdate()
         {
-            var deltaTime = Time.DeltaTime;
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-            var entityManager = EntityManager;
-            var settings = Settings.Instance.Meteor;
 
             Entities.WithAll<Ship>().ForEach((Entity e, in IsColliding isColliding) =>
             {

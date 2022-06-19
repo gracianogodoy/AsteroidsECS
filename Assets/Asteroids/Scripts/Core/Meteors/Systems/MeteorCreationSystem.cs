@@ -71,7 +71,7 @@ namespace Asteroids.Core
                 points[6] = new float2(-0.5f, -0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier);
                 points[7] = new float2(-0.5f, 0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier);
 
-                EntityCreationHelper.AddViewComponents(meteorEntity,
+                EntityCreationHelper.AddBaseComponents(meteorEntity,
                     commandBuffer,
                     doCreateMeteor.Position,
                     colorID,

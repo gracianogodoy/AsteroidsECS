@@ -62,7 +62,7 @@ namespace Asteroids.Core
                     points[2] = new float2(0, -0.05f);
                     points[3] = new float2(-0.05f, 0);
 
-                    EntityCreationHelper.AddViewComponents(bulletEntity,
+                    EntityCreationHelper.AddBaseComponents(bulletEntity,
                         commandBuffer,
                         position.Value,
                         bulletColorID,

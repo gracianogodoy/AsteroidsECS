@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ColorID: 1
   SpawnCooldown: 1.5
-  SpawnAmount: 10
+  SpawnAmount: 1
   MinSpeed: 1
   MaxSpeed: 2
   SmallSizeFactor: 0.5

@@ -47,7 +47,25 @@ namespace Asteroids.Core
 
             var position = GetComponent<Position>(shipEntity);
 
-            CreateBullet(facingDirection.Value, position.Value);
+            var shootAmount = GetComponent<ShootAmount>(shipEntity);
+
+            var lastAngle = 0.0f;
+            var angleBetween = math.radians(30);
+
+            for (int i = 0; i < shootAmount.Value; i++)
+            {
+                var direction = facingDirection.Value;
+
+                var angle = i % 2 == 0 ? -i * angleBetween : i * angleBetween;
+
+                lastAngle += angle;
+
+                direction = VectorHelper.Rotate(lastAngle, direction);
+
+                direction = math.normalize(direction);
+
+                CreateBullet(direction, position.Value);
+            }
         }
 
         private void CreateBullet(float2 direction, float2 position)

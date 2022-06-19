@@ -30,7 +30,7 @@ namespace Asteroids.Core
             }
         }
 
-        public static void AddViewComponents(Entity entity, EntityCommandBuffer commandBuffer, float2 startingPosition, byte colorId, NativeArray<float2> points)
+        public static void AddBaseComponents(Entity entity, EntityCommandBuffer commandBuffer, float2 startingPosition, byte colorId, NativeArray<float2> points)
         {
             commandBuffer.AddComponent(entity, new Position()
             {

@@ -24,11 +24,7 @@ namespace Asteroids.Core
                     var point = pointsBuffer[i];
                     var x = point.Value.x;
                     var y = point.Value.y;
-
-                    var ca = math.cos(angle);
-                    var sa = math.sin(angle);
-
-                    var newValue = new float2(x * ca - y * sa, x * sa + y * ca);
+                    var newValue = VectorHelper.Rotate(angle, point.Value);
 
                     pointsBuffer.ElementAt(i).Value = newValue;
                 }

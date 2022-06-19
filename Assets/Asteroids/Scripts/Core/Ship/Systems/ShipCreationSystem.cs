@@ -46,10 +46,12 @@ namespace Asteroids.Core
                 typeof(Velocity),
                 typeof(Warpable),
                 typeof(FacingDirection),
-                typeof(Collidable));
+                typeof(Collidable),
+                typeof(ShootAmount));
             var sizeFactor = shipSettings.SizeFactor;
 
             EntityManager.AddComponent<CanShoot>(shipEntity);
+            EntityManager.AddComponentData(shipEntity, new ShootAmount() { Value = 1 });
 
             EntityCreationHelper.AddBaseComponents(shipEntity,
                 entityManager,

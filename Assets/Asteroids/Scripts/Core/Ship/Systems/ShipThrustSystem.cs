@@ -44,11 +44,11 @@ namespace Asteroids.Core
             var pwrX = value.x * value.x;
             var pwrY = value.y * value.y;
             var magnitude = math.sqrt(pwrX + pwrY);
-            var direction = new float2(value.x / magnitude, value.y / magnitude);
+            var normalizedDirection = new float2(value.x / magnitude, value.y / magnitude);
 
             if (magnitude >= maxSpeed)
             {
-                value = direction * maxSpeed;
+                value = normalizedDirection * maxSpeed;
             }
 
             return value;

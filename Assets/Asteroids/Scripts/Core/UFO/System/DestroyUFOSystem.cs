@@ -14,9 +14,7 @@ namespace Asteroids.Core
 
         protected override void OnUpdate()
         {
-            var deltaTime = Time.DeltaTime;
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-            var entityManager = EntityManager;
 
             Entities.ForEach((Entity e, in IsColliding isColliding, in UFO ufo) =>
             {

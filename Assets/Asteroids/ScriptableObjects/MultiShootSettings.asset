@@ -9,17 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49be9505ed4f06c4082b57e51b7d96bb, type: 3}
-  m_Name: ShipSettings
+  m_Script: {fileID: 11500000, guid: bd6040a19480bed4382d56cb091bcef9, type: 3}
+  m_Name: MultiShootSettings
   m_EditorClassIdentifier: 
-  StartingPosition:
-    x: 0
-    y: 0
-  ColorID: 0
-  SizeFactor: 0.5
-  RotationSpeed: 270
-  Acceleration: 10
-  MaxSpeed: 3
-  ShootCooldown: 0.5
-  BulletSpeed: 10
-  BulletColorID: 2
+  ColorID: 5
+  sizeFactor: 0.3

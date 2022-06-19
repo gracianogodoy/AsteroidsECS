@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class UFOCreationSystem : SystemBase
+    public class PowerupCreationSystem : SystemBase
     {
         private UFOSettings settings;
 
@@ -15,7 +15,7 @@ namespace Asteroids.Core
 
         protected override void OnUpdate()
         {
-            var cooldownEntity = GetEntityQuery(typeof(UFOSpawnCooldown)).GetSingletonEntity();
+            var cooldownEntity = GetEntityQuery(typeof(PowerupCooldown)).GetSingletonEntity();
 
             if (HasComponent<IsCooldownComplete>(cooldownEntity))
             {
@@ -33,7 +33,7 @@ namespace Asteroids.Core
 
         private void CreateCooldownEntity()
         {
-            var cooldownEntity = EntityManager.CreateEntity(typeof(UFOSpawnCooldown), typeof(Cooldown));
+            var cooldownEntity = EntityManager.CreateEntity(typeof(PowerupCooldown), typeof(Cooldown));
             EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
         }
 

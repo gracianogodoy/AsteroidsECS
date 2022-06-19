@@ -3,16 +3,36 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    [AlwaysUpdateSystem]
-    [UpdateInGroup(typeof(InitializationSystemGroup))]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class ShipCreationSystem : SystemBase
     {
+        private const float Cooldown = 1;
+
+        protected override void OnCreate()
+        {
+            EntityManager.CreateEntity(typeof(ShipSpawnCooldown));
+        }
+
         protected override void OnUpdate()
         {
             var shipQuery = GetEntityQuery(typeof(Ship));
-            if (shipQuery.IsEmpty)
+            var cooldownEntity = GetEntityQuery(typeof(ShipSpawnCooldown)).GetSingletonEntity();
+
+            if (HasComponent<IsCooldownComplete>(cooldownEntity))
             {
                 CreateShip();
+            }
+
+            if (shipQuery.IsEmpty && !HasComponent<Cooldown>(cooldownEntity))
+            {
+                EntityManager.AddComponentData(cooldownEntity, new Cooldown() { Value = Cooldown });
+            }
+
+            var doResetQuery = GetEntityQuery(typeof(DoReset));
+            if (!doResetQuery.IsEmpty)
+            {
+                if (HasComponent<Cooldown>(cooldownEntity))
+                    EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = Cooldown });
             }
         }
 

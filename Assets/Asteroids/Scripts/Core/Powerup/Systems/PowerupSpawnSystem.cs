@@ -5,11 +5,11 @@ namespace Asteroids.Core
 {
     public class PowerupSpawnSystem : SystemBase
     {
-        public const float Cooldown = 1f;
-        public const float Speed = 1f;
+        private PowerupsSettings settings;
 
         protected override void OnCreate()
         {
+            settings = Settings.Instance.PowerupsSettings;
             CreateCooldownEntity();
         }
 
@@ -19,40 +19,51 @@ namespace Asteroids.Core
 
             if (HasComponent<IsCooldownComplete>(cooldownEntity))
             {
-                CreatePowerup();
-                EntityManager.AddComponentData(cooldownEntity, new Cooldown() { Value = Cooldown });
+                CreateRandomPowerup();
+                EntityManager.AddComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
             }
 
             var doResetQuery = GetEntityQuery(typeof(DoReset));
             if (!doResetQuery.IsEmpty)
             {
                 if (HasComponent<Cooldown>(cooldownEntity))
-                    EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = Cooldown });
+                    EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
             }
         }
 
         private void CreateCooldownEntity()
         {
             var cooldownEntity = EntityManager.CreateEntity(typeof(PowerupCooldown), typeof(Cooldown));
-            EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = Cooldown });
+            EntityManager.SetComponentData(cooldownEntity, new Cooldown() { Value = settings.SpawnCooldown });
         }
 
-        private void CreatePowerup()
+        public void CreateRandomPowerup()
         {
-            var archetype = EntityManager.CreateArchetype(typeof(DoCreatePowerup));
-            var entity = EntityManager.CreateEntity(archetype);
-
             var mustSpawnLeftSide = UnityEngine.Random.value > 0.5f;
 
             var position = mustSpawnLeftSide ? new float2(ScreenHelper.MaxBoundX, UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY)) :
-                new float2(ScreenHelper.MinBoundX, UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY));
+             new float2(ScreenHelper.MinBoundX, UnityEngine.Random.Range(ScreenHelper.MinBoundY, ScreenHelper.MaxBoundY));
 
-            var id = UnityEngine.Random.Range(0, PowerupUtils.PowerupUpAmount);
+            var randomIndex = UnityEngine.Random.Range(0, Powerups.Configs.Length);
+            var config = Powerups.Configs[randomIndex];
 
             var direction = new float2();
             direction.x = mustSpawnLeftSide ? -1f : 1f;
 
-            EntityManager.SetComponentData(entity, new DoCreatePowerup() { ID = id, Position = position, Velocity = direction * Speed });
+            var entity = EntityManager.CreateEntity(typeof(Powerup),
+                typeof(Velocity),
+                typeof(MustDestroyOutsideScreen),
+                typeof(Collidable),
+                config.ComponentType);
+
+            EntityManager.SetComponentData(entity, new Velocity() { Value = direction * settings.Speed });
+
+            EntityCreationHelper.AddBaseComponents(entity,
+               EntityManager,
+               position,
+               config.ColorID,
+               config.Points
+               );
         }
     }
 }

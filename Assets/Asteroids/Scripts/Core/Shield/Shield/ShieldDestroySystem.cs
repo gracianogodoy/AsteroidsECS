@@ -3,34 +3,26 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class MultiShootSystem : SystemBase
+    public class ShieldDestroySystem : SystemBase
     {
         private EntityCommandBufferSystem commandBufferSystem;
-        private MultiShootSettings settings;
 
         protected override void OnCreate()
         {
-            settings = Settings.Instance.MultiShoot;
             commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
         protected override void OnUpdate()
         {
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-            Entities.WithAll<Powerup, MultiShootPowerup>().ForEach((Entity entity, IsColliding isColliding) =>
+
+            Entities.WithAll<Shield>().ForEach((Entity entity, IsColliding isColliding) =>
             {
                 var otherEntity = isColliding.OtherEntity;
 
-                if (HasComponent<Ship>(otherEntity))
+                if (HasComponent<Meteor>(otherEntity) || HasComponent<UFO>(otherEntity) || HasComponent<UFOBullet>(otherEntity))
                 {
-                    var shootAmount = GetComponent<ShootAmount>(otherEntity);
-
-                    shootAmount.Value += 1;
-
-                    if (shootAmount.Value > settings.MaxShootAmount)
-                        shootAmount.Value = settings.MaxShootAmount;
-
-                    commandBuffer.SetComponent(otherEntity, new ShootAmount() { Value = shootAmount.Value });
+                    commandBuffer.DestroyEntity(otherEntity);
                     commandBuffer.DestroyEntity(entity);
                 }
             }).WithoutBurst().Run();

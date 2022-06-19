@@ -8,6 +8,7 @@ namespace Asteroids.Core
         public MeteorSettings Meteor;
         public UFOSettings UFO;
         public MultiShootSettings MultiShoot;
+        public PowerupsSettings PowerupsSettings;
 
         private static Settings instance;
 

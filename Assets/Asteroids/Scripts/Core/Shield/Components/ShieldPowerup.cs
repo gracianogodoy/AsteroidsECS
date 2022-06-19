@@ -2,7 +2,7 @@
 
 namespace Asteroids.Core
 {
-    public struct MultiShoot : IComponentData
+    public struct ShieldPowerup : IComponentData
     {
     }
 }

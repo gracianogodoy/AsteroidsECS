@@ -156,6 +156,7 @@ MonoBehaviour:
   Meteor: {fileID: 11400000, guid: 9d36c61397a2585489e25f37abe00b09, type: 2}
   UFO: {fileID: 11400000, guid: 47515f770145a594caaffb91f94d2455, type: 2}
   MultiShoot: {fileID: 11400000, guid: 79513ee018e673a4488cd2ab10bcc7f3, type: 2}
+  PowerupsSettings: {fileID: 11400000, guid: 89c8aeabe2e53ed4880e6e9d8d7cca72, type: 2}
 --- !u!4 &85769669
 Transform:
   m_ObjectHideFlags: 0

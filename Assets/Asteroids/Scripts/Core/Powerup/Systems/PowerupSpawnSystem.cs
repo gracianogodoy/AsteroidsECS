@@ -53,10 +53,11 @@ namespace Asteroids.Core
             var entity = EntityManager.CreateEntity(typeof(Powerup),
                 typeof(Velocity),
                 typeof(MustDestroyOutsideScreen),
-                typeof(Collidable),
+                typeof(Collider),
                 config.ComponentType);
 
             EntityManager.SetComponentData(entity, new Velocity() { Value = direction * settings.Speed });
+            EntityManager.SetComponentData(entity, new Collider() { Layer = 0 });
 
             EntityCreationHelper.AddBaseComponents(entity,
                EntityManager,

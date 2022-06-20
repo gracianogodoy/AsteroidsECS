@@ -19,7 +19,7 @@ namespace Asteroids.Core
         {
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
             settings = Settings.Instance.UFO;
-            var archetype = EntityManager.CreateArchetype(typeof(Velocity), typeof(MustDestroyOutsideScreen), typeof(UFOBullet), typeof(Collidable));
+            var archetype = EntityManager.CreateArchetype(typeof(Velocity), typeof(MustDestroyOutsideScreen), typeof(UFOBullet), typeof(Collider));
             var shootCooldown = settings.ShootCooldown;
             var bulletSpeed = settings.BulletSpeed;
             var bulletColorID = settings.BulletColorID;
@@ -55,6 +55,7 @@ namespace Asteroids.Core
                     }
 
                     commandBuffer.SetComponent(bulletEntity, new Velocity() { Value = direction * bulletSpeed });
+                    commandBuffer.SetComponent(bulletEntity, new Collider() { Layer = 0 });
 
                     var points = new NativeArray<float2>(4, Allocator.Temp);
                     points[0] = new float2(0, 0.05f);

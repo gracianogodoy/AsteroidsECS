@@ -20,4 +20,4 @@ MonoBehaviour:
   SpawnCooldown: 20
   ShootCooldown: 2
   BulletSpeed: 3
-  BulletColorID: 4
+  BulletColorID: 3

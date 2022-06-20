@@ -15,7 +15,7 @@ namespace Asteroids.Core
 
         protected override void OnUpdate()
         {
-            var collidables = GetEntityQuery(typeof(Collidable)).ToEntityArray(Allocator.TempJob);
+            var collidables = GetEntityQuery(typeof(Collider)).ToEntityArray(Allocator.TempJob);
             var bufferFromEntity = GetBufferFromEntity<Points>();
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
 
@@ -26,10 +26,16 @@ namespace Asteroids.Core
                     var entity = collidables[i];
                     var entityPointsBuffer = bufferFromEntity[entity];
                     var position = GetComponent<Position>(entity);
+                    var collider = GetComponent<Collider>(entity);
 
                     for (int o = 0; o < collidables.Length; o++)
                     {
                         var otherEntity = collidables[o];
+                        var otherCollider = GetComponent<Collider>(otherEntity);
+
+                        if (collider.Layer == otherCollider.Layer)
+                            continue;
+
                         if (entity == otherEntity)
                             continue;
 

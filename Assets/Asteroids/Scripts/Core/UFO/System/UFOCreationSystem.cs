@@ -51,10 +51,11 @@ namespace Asteroids.Core
 
             var direction = new float2(randomDirection.x, randomDirection.y);
 
-            var archetype = EntityManager.CreateArchetype(typeof(UFO), typeof(Velocity), typeof(Warpable), typeof(Collidable));
+            var archetype = EntityManager.CreateArchetype(typeof(UFO), typeof(Velocity), typeof(Warpable), typeof(Collider));
             var ufoEntity = EntityManager.CreateEntity(archetype);
 
             EntityManager.SetComponentData(ufoEntity, new Velocity() { Value = direction * speed });
+            EntityManager.SetComponentData(ufoEntity, new Collider() { Layer = 0 });
 
             var ufoType = UnityEngine.Random.value > 0.5f ? UFO.UFOType.Big : UFO.UFOType.Small;
 

@@ -16,10 +16,10 @@ MonoBehaviour:
     x: 0
     y: 0
   ColorID: 0
-  SizeFactor: 0.5
-  RotationSpeed: 270
-  Acceleration: 10
+  SizeFactor: 0.4
+  RotationSpeed: 180
+  Acceleration: 5
   MaxSpeed: 2
-  ShootCooldown: 0.5
+  ShootCooldown: 0.3
   BulletSpeed: 10
   BulletColorID: 2

@@ -18,7 +18,7 @@ namespace Asteroids.Core
         protected override void OnUpdate()
         {
             var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-            var archetype = EntityManager.CreateArchetype(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed), typeof(Collidable));
+            var archetype = EntityManager.CreateArchetype(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed), typeof(Collider));
 
             var minSpeed = settings.MinSpeed;
             var maxSpeed = settings.MaxSpeed;
@@ -50,6 +50,7 @@ namespace Asteroids.Core
                     });
                 commandBuffer.SetComponent(meteorEntity,
                     new Velocity() { Value = direction * speed });
+                commandBuffer.SetComponent(meteorEntity, new Collider() { Layer = 0 });
 
                 float sizeFactor = bigSizeFactor;
 

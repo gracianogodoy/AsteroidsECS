@@ -21,7 +21,7 @@ namespace Asteroids.Core
             var world = World.DefaultGameObjectInjectionWorld;
             entityManager = world.EntityManager;
 
-            query = entityManager.CreateEntityQuery(typeof(Points));
+            query = entityManager.CreateEntityQuery(typeof(Points), typeof(Position), typeof(ColorID));
 
             Camera.onPostRender += OnPostRenderCallback;
         }

@@ -32,9 +32,9 @@ namespace Asteroids.Core
 
                         var shipPosition = GetComponent<Position>(otherEntity);
                         commandBuffer.AddComponent(shieldEntity, new Shield());
-                        commandBuffer.AddComponent(shieldEntity, new Collidable());
+                        commandBuffer.AddComponent(shieldEntity, new Collider() { Layer = 1 });
 
-                        var sizeFactor = 1f;
+                        var sizeFactor = 0.7f;
 
                         var points = new NativeArray<float2>(8, Allocator.Temp);
                         points[0] = new float2(-0.19f, 0.5f) * sizeFactor;

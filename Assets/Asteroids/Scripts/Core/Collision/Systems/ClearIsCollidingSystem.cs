@@ -3,22 +3,16 @@
 namespace Asteroids.Core
 {
     [UpdateBefore(typeof(CollisionSystem))]
-    public class ClearIsCollidingSystem : SystemBase
+    public partial class ClearIsCollidingSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Entities.ForEach((Entity e, ref IsCooldownComplete isCooldownComplete) =>
             {
-                commandBuffer.RemoveComponent<IsColliding>(e);
+                ecb.RemoveComponent<IsColliding>(e);
             }).Run();
         }
     }

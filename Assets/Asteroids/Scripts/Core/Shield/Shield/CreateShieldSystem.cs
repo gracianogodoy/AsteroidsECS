@@ -5,20 +5,19 @@ using Unity.Mathematics;
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class CreateShieldSystem : SystemBase
+    public partial class CreateShieldSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
         private ShipSettings shipSettings;
 
         protected override void OnCreate()
         {
             shipSettings = Settings.Instance.Ship;
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
             var shieldQuery = GetEntityQuery(typeof(Shield));
             Entities.WithAll<Powerup, ShieldPowerup>().ForEach((Entity entity, IsColliding isColliding) =>
             {
@@ -28,11 +27,11 @@ namespace Asteroids.Core
                 {
                     if (shieldQuery.IsEmpty)
                     {
-                        var shieldEntity = commandBuffer.CreateEntity();
+                        var shieldEntity = ecb.CreateEntity();
 
                         var shipPosition = GetComponent<Position>(otherEntity);
-                        commandBuffer.AddComponent(shieldEntity, new Shield());
-                        commandBuffer.AddComponent(shieldEntity, new Collider() { Layer = 1 });
+                        ecb.AddComponent(shieldEntity, new Shield());
+                        ecb.AddComponent(shieldEntity, new Collider() { Layer = 1 });
 
                         var sizeFactor = 0.7f;
 
@@ -47,14 +46,14 @@ namespace Asteroids.Core
                         points[7] = new float2(-0.5f, 0.19f) * sizeFactor;
 
                         EntityCreationHelper.AddBaseComponents(shieldEntity,
-                            commandBuffer,
+                            ecb,
                             shipPosition.Value,
                             shipSettings.ColorID,
                             points
                             );
                     }
 
-                    commandBuffer.DestroyEntity(entity);
+                    ecb.DestroyEntity(entity);
                 }
             }).WithoutBurst().Run();
         }

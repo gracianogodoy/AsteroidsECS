@@ -2,22 +2,16 @@
 
 namespace Asteroids.Core
 {
-    public class ClearIsCooldownCompleteSystem : SystemBase
+    public partial class ClearIsCooldownCompleteSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
+       protected override void OnUpdate()
         {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
-        protected override void OnUpdate()
-        {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
+            
             Entities.ForEach((Entity e, ref IsCooldownComplete isCooldownComplete) =>
             {
-                commandBuffer.RemoveComponent<IsCooldownComplete>(e);
+                ecb.RemoveComponent<IsCooldownComplete>(e);
             }).Run();
         }
     }

@@ -3,18 +3,12 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class DestroyUFOSystem : SystemBase
+    public partial class DestroyUFOSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Entities.ForEach((Entity e, in IsColliding isColliding, in UFO ufo) =>
             {
@@ -22,8 +16,8 @@ namespace Asteroids.Core
 
                 if (HasComponent<ShipBullet>(otherEntity))
                 {
-                    commandBuffer.DestroyEntity(e);
-                    commandBuffer.DestroyEntity(otherEntity);
+                    ecb.DestroyEntity(e);
+                    ecb.DestroyEntity(otherEntity);
                 }
             }).WithoutBurst().Run();
         }

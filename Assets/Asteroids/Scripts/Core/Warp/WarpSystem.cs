@@ -2,7 +2,7 @@
 
 namespace Asteroids.Core
 {
-    public class WarpSystem : SystemBase
+    public partial class WarpSystem : SystemBase
     {
         protected override void OnUpdate()
         {

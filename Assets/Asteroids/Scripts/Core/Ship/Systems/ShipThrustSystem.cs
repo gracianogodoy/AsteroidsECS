@@ -3,11 +3,11 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class ShipThrustSystem : SystemBase
+    public partial class ShipThrustSystem : SystemBase
     {
         protected override void OnUpdate()
         {
-            var deltaTime = Time.DeltaTime;
+            var deltaTime = SystemAPI.Time.DeltaTime;
             var shipSettings = Settings.Instance.Ship;
 
             var moveFowardQuery = GetEntityQuery(typeof(MoveFowardInput));

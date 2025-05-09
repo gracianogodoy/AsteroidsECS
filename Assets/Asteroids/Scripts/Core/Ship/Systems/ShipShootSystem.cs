@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class ShipShootSystem : SystemBase
+    public partial class ShipShootSystem : SystemBase
     {
         private ShipSettings settings;
 

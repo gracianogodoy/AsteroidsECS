@@ -5,7 +5,7 @@ namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateBefore(typeof(MeteorCreationSystem))]
-    public class MeteorSpawnSystem : SystemBase
+    public partial class MeteorSpawnSystem : SystemBase
     {
         private MeteorSettings settings;
 

@@ -3,7 +3,7 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class ShieldSystem : SystemBase
+    public partial class ShieldSystem : SystemBase
     {
         protected override void OnUpdate()
         {

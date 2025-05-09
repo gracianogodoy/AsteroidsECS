@@ -4,20 +4,15 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class UFOShootSystem : SystemBase
+    public partial class UFOShootSystem : SystemBase
     {
         private UFOSettings settings;
 
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
+            
             settings = Settings.Instance.UFO;
             var archetype = EntityManager.CreateArchetype(typeof(Velocity), typeof(MustDestroyOutsideScreen), typeof(UFOBullet), typeof(Collider));
             var shootCooldown = settings.ShootCooldown;
@@ -30,12 +25,12 @@ namespace Asteroids.Core
             {
                 if (!HasComponent<Cooldown>(entity))
                 {
-                    commandBuffer.AddComponent(entity, new Cooldown() { Value = shootCooldown });
+                    ecb.AddComponent(entity, new Cooldown() { Value = shootCooldown });
                 }
 
                 if (HasComponent<IsCooldownComplete>(entity))
                 {
-                    var bulletEntity = commandBuffer.CreateEntity(archetype);
+                    var bulletEntity = ecb.CreateEntity(archetype);
 
                     var direction = new float2(1, 0);
 
@@ -54,8 +49,8 @@ namespace Asteroids.Core
                         }
                     }
 
-                    commandBuffer.SetComponent(bulletEntity, new Velocity() { Value = direction * bulletSpeed });
-                    commandBuffer.SetComponent(bulletEntity, new Collider() { Layer = 0 });
+                    ecb.SetComponent(bulletEntity, new Velocity() { Value = direction * bulletSpeed });
+                    ecb.SetComponent(bulletEntity, new Collider() { Layer = 0 });
 
                     var points = new NativeArray<float2>(4, Allocator.Temp);
                     points[0] = new float2(0, 0.05f);
@@ -64,7 +59,7 @@ namespace Asteroids.Core
                     points[3] = new float2(-0.05f, 0);
 
                     EntityCreationHelper.AddBaseComponents(bulletEntity,
-                        commandBuffer,
+                        ecb,
                         position.Value,
                         bulletColorID,
                         points

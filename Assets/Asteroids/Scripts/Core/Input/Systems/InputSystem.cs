@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Asteroids.Core
 {
     [AlwaysUpdateSystem]
-    public class InputSystem : SystemBase
+    public partial class InputSystem : SystemBase
     {
         protected override void OnUpdate()
         {

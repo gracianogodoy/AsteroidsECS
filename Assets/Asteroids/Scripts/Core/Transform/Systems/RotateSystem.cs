@@ -3,12 +3,12 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class RotateSystem : SystemBase
+    public partial class RotateSystem : SystemBase
     {
         protected override void OnUpdate()
         {
-            var bufferFromEntity = GetBufferFromEntity<Points>();
-            var deltaTime = Time.DeltaTime;
+            var bufferFromEntity = SystemAPI.GetBufferLookup<Points>();
+            var deltaTime = SystemAPI.Time.DeltaTime;
 
             Entities.ForEach((Entity entity,
                 ref Rotation rotation,

@@ -4,20 +4,19 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class MeteorCreationSystem : SystemBase
+    public partial class MeteorCreationSystem : SystemBase
     {
         private MeteorSettings settings;
-        private EntityCommandBufferSystem commandBufferSystem;
 
         protected override void OnCreate()
         {
-            commandBufferSystem = World.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
             settings = Settings.Instance.Meteor;
         }
 
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
             var archetype = EntityManager.CreateArchetype(typeof(Meteor), typeof(Velocity), typeof(Warpable), typeof(RotateSpeed), typeof(Collider));
 
             var minSpeed = settings.MinSpeed;
@@ -37,20 +36,20 @@ namespace Asteroids.Core
 
                 var direction = new float2(randomDirection.x, randomDirection.y);
 
-                var meteorEntity = commandBuffer.CreateEntity(archetype);
+                var meteorEntity = ecb.CreateEntity(archetype);
 
                 var size = doCreateMeteor.Size;
 
-                commandBuffer.SetComponent(meteorEntity,
+                ecb.SetComponent(meteorEntity,
                     new Meteor() { Size = size });
-                commandBuffer.SetComponent(meteorEntity,
+                ecb.SetComponent(meteorEntity,
                     new RotateSpeed()
                     {
                         Value = UnityEngine.Random.Range(minRotateSpeed, maxRotateSpeed)
                     });
-                commandBuffer.SetComponent(meteorEntity,
+                ecb.SetComponent(meteorEntity,
                     new Velocity() { Value = direction * speed });
-                commandBuffer.SetComponent(meteorEntity, new Collider() { Layer = 0 });
+                ecb.SetComponent(meteorEntity, new Collider() { Layer = 0 });
 
                 float sizeFactor = bigSizeFactor;
 
@@ -73,7 +72,7 @@ namespace Asteroids.Core
                 points[7] = new float2(-0.5f, 0.19f) * sizeFactor * UnityEngine.Random.Range(minAdjustmentMulplier, maxAdjustmentMulplier);
 
                 EntityCreationHelper.AddBaseComponents(meteorEntity,
-                    commandBuffer,
+                    ecb,
                     doCreateMeteor.Position,
                     colorID,
                     points
@@ -81,7 +80,7 @@ namespace Asteroids.Core
 
                 points.Dispose();
 
-                commandBuffer.DestroyEntity(entity);
+                ecb.DestroyEntity(entity);
             }).Run();
         }
     }

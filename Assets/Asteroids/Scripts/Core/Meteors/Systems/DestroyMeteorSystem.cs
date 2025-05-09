@@ -3,21 +3,12 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class DestroyMeteorSystem : SystemBase
+    public partial class DestroyMeteorSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
-            var deltaTime = Time.DeltaTime;
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
-            var entityManager = EntityManager;
-            var settings = Settings.Instance.Meteor;
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Entities.ForEach((Entity e, in IsColliding isColliding, in Meteor meteor, in Position position) =>
             {
@@ -33,12 +24,12 @@ namespace Asteroids.Core
                     if (meteor.Size != Meteor.MeteorSize.Small)
                         for (int i = 0; i < 2; i++)
                         {
-                            var doCreateEntity = commandBuffer.CreateEntity();
-                            commandBuffer.AddComponent(doCreateEntity, new DoCreateMeteor() { Position = position.Value, Size = sizeToCreate });
+                            var doCreateEntity = ecb.CreateEntity();
+                            ecb.AddComponent(doCreateEntity, new DoCreateMeteor() { Position = position.Value, Size = sizeToCreate });
                         }
 
-                    commandBuffer.DestroyEntity(e);
-                    commandBuffer.DestroyEntity(otherEntity);
+                    ecb.DestroyEntity(e);
+                    ecb.DestroyEntity(otherEntity);
                 }
             }).WithoutBurst().Run();
         }

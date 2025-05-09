@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class ShipHyperspaceSystem : SystemBase
+    public partial class ShipHyperspaceSystem : SystemBase
     {
         protected override void OnUpdate()
         {

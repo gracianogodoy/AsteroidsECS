@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class ShipFacingDirection : SystemBase
+    public partial class ShipFacingDirection : SystemBase
     {
         protected override void OnUpdate()
         {

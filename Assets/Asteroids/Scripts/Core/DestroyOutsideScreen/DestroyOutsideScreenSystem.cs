@@ -3,18 +3,12 @@
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
-    public class DestroyOutsideScreenSystem : SystemBase
+    public partial class DestroyOutsideScreenSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Entities.WithAll<MustDestroyOutsideScreen>().ForEach((Entity entity, in Position position) =>
             {
@@ -23,7 +17,7 @@ namespace Asteroids.Core
                 || position.Value.y < ScreenHelper.MinBoundY
                 || position.Value.y > ScreenHelper.MaxBoundY)
                 {
-                    commandBuffer.DestroyEntity(entity);
+                    ecb.DestroyEntity(entity);
                 }
             }).Schedule();
 

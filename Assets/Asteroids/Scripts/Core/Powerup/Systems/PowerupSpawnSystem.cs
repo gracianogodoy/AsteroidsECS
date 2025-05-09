@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class PowerupSpawnSystem : SystemBase
+    public partial class PowerupSpawnSystem : SystemBase
     {
         private PowerupsSettings settings;
 

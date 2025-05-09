@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class UFOCreationSystem : SystemBase
+    public partial class UFOCreationSystem : SystemBase
     {
         private UFOSettings settings;
 

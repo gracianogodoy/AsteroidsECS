@@ -4,27 +4,21 @@ using Unity.Mathematics;
 
 namespace Asteroids.Core
 {
-    public class CollisionSystem : SystemBase
+    public partial class CollisionSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
         protected override void OnUpdate()
         {
             var collidables = GetEntityQuery(typeof(Collider)).ToEntityArray(Allocator.TempJob);
-            var bufferFromEntity = GetBufferFromEntity<Points>();
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var pointsBufferLookup = SystemAPI.GetBufferLookup<Points>();
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Job.WithCode(() =>
             {
                 for (int i = 0; i < collidables.Length; i++)
                 {
                     var entity = collidables[i];
-                    var entityPointsBuffer = bufferFromEntity[entity];
+                    var entityPointsBuffer = pointsBufferLookup[entity];
                     var position = GetComponent<Position>(entity);
                     var collider = GetComponent<Collider>(entity);
 
@@ -39,7 +33,7 @@ namespace Asteroids.Core
                         if (entity == otherEntity)
                             continue;
 
-                        var otherEntityPointsBuffer = bufferFromEntity[otherEntity];
+                        var otherEntityPointsBuffer = pointsBufferLookup[otherEntity];
                         var otherPosition = GetComponent<Position>(otherEntity);
 
                         for (int w = 0; w < entityPointsBuffer.Length; w++)
@@ -66,8 +60,8 @@ namespace Asteroids.Core
 
                             if (intersectionAmount % 2 != 0)
                             {
-                                commandBuffer.AddComponent(entity, new IsColliding() { OtherEntity = otherEntity });
-                                commandBuffer.AddComponent(otherEntity, new IsColliding() { OtherEntity = entity });
+                                ecb.AddComponent(entity, new IsColliding() { OtherEntity = otherEntity });
+                                ecb.AddComponent(otherEntity, new IsColliding() { OtherEntity = entity });
                             }
                         }
                     }

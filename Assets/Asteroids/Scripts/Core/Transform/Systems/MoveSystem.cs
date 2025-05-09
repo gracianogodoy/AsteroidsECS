@@ -2,11 +2,11 @@
 
 namespace Asteroids.Core
 {
-    public class MoveSystem : SystemBase
+    public partial class MoveSystem : SystemBase
     {
         protected override void OnUpdate()
         {
-            var deltaTime = Time.DeltaTime;
+            var deltaTime = SystemAPI.Time.DeltaTime;
 
             Entities.ForEach((ref Position position,
                 in Velocity velocity) =>

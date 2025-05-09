@@ -2,7 +2,7 @@
 
 namespace Asteroids.Core
 {
-    public class ShipTurningSystem : SystemBase
+    public partial class ShipTurningSystem : SystemBase
     {
         protected override void OnUpdate()
         {

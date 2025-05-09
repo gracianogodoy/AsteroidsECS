@@ -4,7 +4,7 @@ using Unity.Mathematics;
 namespace Asteroids.Core
 {
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    public class ShipCreationSystem : SystemBase
+    public partial class ShipCreationSystem : SystemBase
     {
         private const float Cooldown = 1;
 

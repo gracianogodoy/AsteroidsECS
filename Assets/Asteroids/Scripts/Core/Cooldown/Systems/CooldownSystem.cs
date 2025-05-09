@@ -2,19 +2,13 @@
 
 namespace Asteroids.Core
 {
-    public class CooldownSystem : SystemBase
+    public partial class CooldownSystem : SystemBase
     {
-        private EntityCommandBufferSystem commandBufferSystem;
-
-        protected override void OnCreate()
+       protected override void OnUpdate()
         {
-            commandBufferSystem = World.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
-        }
-
-        protected override void OnUpdate()
-        {
-            var deltaTime = Time.DeltaTime;
-            var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+            var deltaTime = SystemAPI.Time.DeltaTime;
+            var endSimulationSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = endSimulationSingleton.CreateCommandBuffer(World.Unmanaged);
 
             Entities.ForEach((Entity e, ref Cooldown cooldown) =>
             {
@@ -23,8 +17,8 @@ namespace Asteroids.Core
                 if (cooldown.Value <= 0)
                 {
                     cooldown.Value = 0;
-                    commandBuffer.RemoveComponent<Cooldown>(e);
-                    commandBuffer.AddComponent<IsCooldownComplete>(e);
+                    ecb.RemoveComponent<Cooldown>(e);
+                    ecb.AddComponent<IsCooldownComplete>(e);
                 }
             }).Run();
         }
